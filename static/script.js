@@ -186,13 +186,23 @@ function sendMessage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message })
     })
-      .then(res => res.json())
-      .then(data => {
+    .then(data => {
         const botMsg = document.createElement('div');
         botMsg.className = 'chat-message bot-message';
-        botMsg.textContent = data.response || "No response.";
+      
+        const response = data.response || "No response.";
+      
+        // Apply basic structure to the response
+        botMsg.innerHTML = `
+          <div style="padding: 8px;">
+            <strong>Bot:</strong>
+            <p>${response.replace(/\n/g, "<br>")}</p>
+          </div>
+        `;
+      
         currentConversation.appendChild(botMsg);
       })
+      
       .catch(err => {
         console.error("Bot error:", err);
         const botMsg = document.createElement('div');
